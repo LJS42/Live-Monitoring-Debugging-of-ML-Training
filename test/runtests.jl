@@ -22,7 +22,7 @@ end
     @test r == loss_val
 end
 
-testset "setup_plots" begin
+@testset "setup_plots" begin
     struct DummyQ <: LMD4MLTraining.AbstractQuantity
         key::Symbol
     end
