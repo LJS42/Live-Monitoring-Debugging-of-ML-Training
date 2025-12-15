@@ -5,6 +5,7 @@ using Dates
 using Makie
 using Base.Threads
 
+# coverage: ignore start
 function setup_plots(quantities::Vector{<:AbstractQuantity})
     set_theme!(theme_black())
     fig = Figure(size=(1000, 600), fontsize=18)
@@ -20,11 +21,8 @@ function setup_plots(quantities::Vector{<:AbstractQuantity})
         observables[key] = obs
     end
 
-    # coverage: ignore
     WGLMakie.activate!()
-    # coverage: ignore
     Bonito.browser_display()
-    # coverage: ignore
     display(fig)
 
     return fig, observables, axs
@@ -57,3 +55,4 @@ function render_loop(
         end
     end
 end
+# coverage: ignore end

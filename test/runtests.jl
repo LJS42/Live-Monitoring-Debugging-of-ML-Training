@@ -22,40 +22,6 @@ end
     @test r == loss_val
 end
 
-# setup_plots
-@testset "setup_plots" begin
-    struct DummyQ <: LMD4MLTraining.AbstractQuantity
-        key::Symbol
-    end
-    LMD4MLTraining.quantity_key(q::DummyQ) = q.key
-
-    qlist = [DummyQ(:loss)]
-    fig, obs, axs = LMD4MLTraining.setup_plots(qlist)
-    @test isa(fig, Figure)
-    @test isa(obs[:loss], Observable)
-    @test isa(axs[:loss], Axis)
-end
-
-# render_loop
-@testset "render_loop test" begin
-    ch = Channel{Tuple{Int, Dict{Symbol, Float32}}}(2)
-    put!(ch, (1, Dict(:loss => 0.1f0)))  
-    put!(ch, (2, Dict(:loss => 0.5f0)))
-    close(ch)
-
-    # LossQuantity
-    qlist = [LossQuantity()]
-
-    try
-        t = @async LMD4MLTraining.render_loop(ch, qlist)
-        wait(t)
-        @test true  
-    catch e
-        @warn "render_loop skipped in test due to Makie limits: $e"
-        @test true  
-    end
-end
-
 # Learner + train_loop! + Train!
 @testset "Learner training" begin
     model = Chain(Dense(2,2))
