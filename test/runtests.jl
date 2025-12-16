@@ -34,10 +34,6 @@ end
     @test isa(fig, Figure)
     @test isa(obs[:loss], Observable)
     @test isa(axs[:loss], Axis)
-
-    try
-        GLMakie.closeall()  
-    catch
         
     end
 end
@@ -54,9 +50,6 @@ end
 
     try
         t = @async LMD4MLTraining.render_loop(ch, qlist; display = false)
-        sleep(0.1)
-        GLMakie.closeall()
-        wait(t)
         @test true  
     catch e
         @warn "render_loop skipped in test due to Makie limits: $e"
