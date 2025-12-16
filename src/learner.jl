@@ -71,7 +71,9 @@ function Train!(
     end
 
     wait(train_task)
-    wait(render_task)
+    if with_plots
+        wait(render_task)
+    end
 end
 
 function train_loop!(
