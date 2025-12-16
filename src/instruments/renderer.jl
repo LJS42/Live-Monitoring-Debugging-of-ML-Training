@@ -96,7 +96,7 @@ function render_loop(
     )
 
     for (step, received_quantities) in channel #iterates over channel messages
-    #blocks when channel is empty, ends automatically when channel is empty
+    #blocks when channel is empty
         for (key, value) in received_quantities
             haskey(quantity_data, key) || continue
             push!(quantity_data[key], Point2f(step, value))
