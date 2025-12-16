@@ -34,8 +34,6 @@ end
     @test isa(fig, Figure)
     @test isa(obs[:loss], Observable)
     @test isa(axs[:loss], Axis)
-        
-    end
 end
 
 # render_loop
