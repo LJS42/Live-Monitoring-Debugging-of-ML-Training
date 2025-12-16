@@ -1,6 +1,23 @@
 using Flux
 using Logging
 
+"""
+    Learner
+
+Object bundling together all information for training with cockpit. Mutable struct so that model parameters and optimizer state
+can be updated in-place during training.
+Fields:
+    model: Any
+        arquitecture which parameters should be optimised during training
+    data_loader: Any
+        iterable that makes data batches accesible for training
+    loss_fn: Function
+        calculate the loss of the model w.t.r to training objective (returns scalar loss value)
+    optim: Any
+        optimizer chosen to update model parameters in the backward pass (e.g. Flux.Adam)
+    quantities: Vector{<:AbstractQuantity}
+        (optional) metrics computed every training step used for evakuation and diagnostic of model training
+"""
 mutable struct Learner
     model::Any
     data_loader::Any
@@ -22,6 +39,22 @@ function Learner(
     return Learner(model, data_loader, loss_fn, optim, AbstractQuantity[])
 end
 
+"""
+    Train!(learner, epochs, with_plots)
+
+train a Learner and render quantities (optinal).
+when plotting desired: create channel to pass data from training loop to cockpit session:
+    - use put! to pass data into the channel (if full wait until space availiable, else add inmediately),
+    - use take! to returm data from the channel (if channel is empty wait until data arrives, else retrieve inmediately).
+
+Args:
+    learner: Learner
+        contains model and model training specifications (architecture, loss function, optimizer, quantities to track, etc.)
+    epochs: Int
+        number of training epochs
+    with_plots: Bool
+        user selection, if rendering is desired with_plots = True
+"""
 function Train!(
     learner::Learner,
     epochs::Int,
