@@ -102,7 +102,6 @@ function train_loop!(
     try
         for epoch in 1:epochs
             for (x, y) in learner.data_loader
-                yield()
                 step_count += 1
                 val, grads = Flux.withgradient(m -> learner.loss_fn(m(x), y), learner.model)
                 Flux.update!(learner.optim, learner.model, grads[1])
@@ -117,7 +116,6 @@ function train_loop!(
                     sleep(0.001) # To make concurrency possible
                 end
             end
-            yield()
             @info "Epoch $epoch complete"
         end
     catch e
